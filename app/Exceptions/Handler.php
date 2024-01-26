@@ -49,7 +49,9 @@ class Handler extends ExceptionHandler
         Log::debug(__FILE__, ['>>> starting error reporting']);
         if (config('stackdriver.enabled')) {
             Log::debug(__FILE__, ['stackdriver error reporting enabled']);
-            $reportErrorsServiceClient = new ReportErrorsServiceClient();
+            $reportErrorsServiceClient = new ReportErrorsServiceClient([
+                'credentials' => config('stackdriver.credentials.keyFilePath'),
+            ]);
 
             $formattedProjectName = $reportErrorsServiceClient->projectName(
                 config('stackdriver.credentials.projectId')
