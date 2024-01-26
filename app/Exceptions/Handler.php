@@ -2,9 +2,12 @@
 
 namespace App\Exceptions;
 
-use GlueDev\Laravel\Stackdriver\StackdriverExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
+
+use Google\Cloud\ErrorReporting\V1beta1\ReportErrorsServiceClient;
+use Google\Cloud\ErrorReporting\V1beta1\ReportedErrorEvent;
 
 class Handler extends ExceptionHandler
 {
@@ -43,7 +46,34 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $e)
     {
-        StackdriverExceptionHandler::report($e);
+        Log::debug(__FILE__, ['>>> starting error reporting']);
+        if (config('stackdriver.enabled')) {
+            Log::debug(__FILE__, ['stackdriver error reporting enabled']);
+            $reportErrorsServiceClient = new ReportErrorsServiceClient();
+
+            $formattedProjectName = $reportErrorsServiceClient->projectName(
+                config('stackdriver.credentials.projectId')
+            );
+
+            $event = new ReportedErrorEvent();
+            try {
+                $response = $reportErrorsServiceClient->reportErrorEvent($formattedProjectName, $event);
+                Log::debug(__FILE__, [$response]);
+            } catch(\Exception $e) {
+                Log::debug(__FILE__, ['catch!', $e]);
+            } finally {
+                $reportErrorsServiceClient->close();
+                Log::debug(__FILE__, ['stackdriver error reporting finale']);
+            }    
+        }
+
+        Log::debug(__FILE__, ['pre exception logging']);
+        Log::debug(__FILE__, [$e]);
+        Log::debug(__FILE__, ['pre parent::report']);
+
         parent::report($e);
+
+        Log::debug(__FILE__, ['<<< finished error reporting']);
     }
 }
+
