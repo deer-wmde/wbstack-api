@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
     public function report(Throwable $e)
     {
         Log::debug(__FILE__, ['>>>>>>>> starting error reporting']);
-        Log::debug(__FILE__, [$e]);
+        Log::debug(__FILE__, [$e->getMessage()]);
 
         if (config('stackdriver.enabled')) {
             Log::debug(__FILE__, ['reporting error via stackdrier']);
