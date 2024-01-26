@@ -8,6 +8,7 @@ use Throwable;
 
 use Google\Cloud\ErrorReporting\V1beta1\ReportErrorsServiceClient;
 use Google\Cloud\ErrorReporting\V1beta1\ReportedErrorEvent;
+use Google\Cloud\ErrorReporting\V1beta1\ServiceContext;
 
 class Handler extends ExceptionHandler
 {
@@ -57,7 +58,10 @@ class Handler extends ExceptionHandler
                 config('stackdriver.credentials.projectId')
             );
 
-            $event = new ReportedErrorEvent();
+            $eventServiceContext = new ServiceContext();
+            $event = (new ReportedErrorEvent())
+                ->setServiceContext($eventServiceContext)
+                ->setMessage($e->getMessage());
             try {
                 $response = $reportErrorsServiceClient->reportErrorEvent($formattedProjectName, $event);
                 Log::debug(__FILE__, [$response]);
