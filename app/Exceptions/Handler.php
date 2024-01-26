@@ -58,10 +58,10 @@ class Handler extends ExceptionHandler
                 config('stackdriver.credentials.projectId')
             );
 
-            $eventServiceContext = new ServiceContext();
+            // $eventServiceContext = new ServiceContext();
             $event = (new ReportedErrorEvent())
-                ->setServiceContext($eventServiceContext)
-                ->setMessage($e->getMessage());
+                // ->setServiceContext($eventServiceContext)
+                ->setMessage($e);
             try {
                 $response = $reportErrorsServiceClient->reportErrorEvent($formattedProjectName, $event);
                 Log::debug(__FILE__, [$response]);
