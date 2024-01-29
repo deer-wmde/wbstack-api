@@ -4,8 +4,8 @@ return [
     // Enable error reporting
     'enable' => (bool) env('STACKDRIVER_ENABLED', false),
     'logName' => env('STACKDRIVER_LOGGING_GROUP_NAME', env('APP_NAME')),
-    'serviceId' => env('STACKDRIVER_LOGGING_GROUP_NAME', env('APP_NAME')),
-    'versionId' => null,
+    'serviceId' => env('STACKDRIVER_ERROR_REPORTING_SERVICE_ID', env('APP_NAME')),
+    'versionId' => env('STACKDRIVER_ERROR_REPORTING_VERSION_ID', '1.0.0'),
     'LoggingClient' => [
         // The project ID from the Google Developer's Console.
         'projectId' => env('STACKDRIVER_PROJECT_ID', env('GOOGLE_CLOUD_PROJECT')),
