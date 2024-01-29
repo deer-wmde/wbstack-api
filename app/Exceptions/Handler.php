@@ -77,4 +77,3 @@ class Handler extends ExceptionHandler
         Log::debug(__FILE__, ['<<<<<<<< finished error reporting']);
     }
 }
-
