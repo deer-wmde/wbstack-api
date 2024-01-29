@@ -3,7 +3,6 @@
 return [
     // Enable error reporting
     'enable' => (bool) env('STACKDRIVER_ENABLED', false),
-    'logName' => 'Testing_2024-01-29',
     'serviceId' => env('STACKDRIVER_ERROR_REPORTING_SERVICE_ID', env('APP_NAME')),
     'versionId' => env('STACKDRIVER_ERROR_REPORTING_VERSION_ID', '1.0.0'),
     'LoggingClient' => [
