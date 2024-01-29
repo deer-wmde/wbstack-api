@@ -24,7 +24,7 @@ return [
         // Determines whether or not to use background batching.
         'batchEnabled' => (bool) env('STACKDRIVER_LOGGING_BATCH_ENABLED', true),
         //  Whether or not to output debug information.
-        'debugOutput' => true, //DEBUG
+        'debugOutput' => false,
         // A set of options for a BatchJob.
         'batchOptions' => [
             'batchSize' => 50,
