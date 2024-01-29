@@ -3,8 +3,8 @@
 return [
     // Enable error reporting
     'enable' => (bool) env('STACKDRIVER_ENABLED', false),
-    'logName' => config('app.name'),
-    'serviceId' => config('app.name'),
+    'logName' => env('STACKDRIVER_LOGGING_GROUP_NAME', env('APP_NAME')),
+    'serviceId' => env('STACKDRIVER_LOGGING_GROUP_NAME', env('APP_NAME')),
     'versionId' => null,
     'LoggingClient' => [
         // The project ID from the Google Developer's Console.
@@ -23,12 +23,14 @@ return [
     ],
     'PsrLogger' => [
         // Determines whether or not to use background batching.
-        'batchEnabled' => true,
+        'batchEnabled' => (bool) env('STACKDRIVER_LOGGING_BATCH_ENABLED', true),
         //  Whether or not to output debug information.
-        'debugOutput' => false,
+        'debugOutput' => true, //DEBUG
         // A set of options for a BatchJob.
         'batchOptions' => [
-            'numWorkers' => 2
+            'batchSize' => 50,
+            'callPeriod' => 2.0,
+            'workerNum' => 1,
         ],
 
     ]
